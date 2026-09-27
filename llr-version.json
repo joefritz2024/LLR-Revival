@@ -1,0 +1,13 @@
+{
+  "rev": 1506,
+  "build": "Build 3a",
+  "datum": "26.09.2026",
+  "stufe": "normal",
+  "text": {
+    "de": "Update-Hinweise, korrigierte Setup-Sprachdateien und weitere Verbesserungen.",
+    "en": "Update notices, corrected setup language files and further improvements.",
+    "fr": "Avis de mise à jour, fichiers de langue du setup corrigés et autres améliorations.",
+    "es": "Avisos de actualización, archivos de idioma del instalador corregidos y otras mejoras."
+  },
+  "url": "https://github.com/joefritz2024/LLR-Revival/releases"
+}
