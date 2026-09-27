@@ -1,13 +1,13 @@
 {
-  "rev": 1506,
-  "build": "Build 3a",
-  "datum": "26.09.2026",
+  "rev": 1507,
+  "build": "Build 4",
+  "datum": "01.10.2026",
   "stufe": "normal",
   "text": {
-    "de": "Update-Hinweise, korrigierte Setup-Sprachdateien und weitere Verbesserungen.",
-    "en": "Update notices, corrected setup language files and further improvements.",
-    "fr": "Avis de mise à jour, fichiers de langue du setup corrigés et autres améliorations.",
-    "es": "Avisos de actualización, archivos de idioma del instalador corregidos y otras mejoras."
+    "de": "Version 8.0 Build 4 mit Update-Hinweisen, korrigierten Setup-Sprachdateien und weiteren Verbesserungen.",
+    "en": "Version 8.0 Build 4 with update notices, corrected setup language files and further improvements.",
+    "fr": "Version 8.0 Build 4 avec avis de mise à jour, fichiers de langue du setup corrigés et autres améliorations.",
+    "es": "Versión 8.0 Build 4 con avisos de actualización, archivos de idioma del instalador corregidos y otras mejoras."
   },
   "url": "https://github.com/joefritz2024/LLR-Revival/releases"
 }
