@@ -10,7 +10,7 @@ LLR-Revival turns your Logos/Verbum library into a sermon workshop: search your 
 
 | You use… | Download (see **Assets** below) |
 |---|---|
-| **Windows – recommended** | `LLR-Revival.v8.0.NovaPro.Build.4.-.01.10.26.Rev1507.-.Setup-Win.exe` – double-click and follow the steps |
+| **Windows – recommended** | `LLR-Revival.v8.0.NovaPro.Build.4.-.01.10.26.Rev1508.-.Setup-Win.exe` – double-click and follow the steps |
 | Windows without Setup | `LLR-Revival-v8_0-build4-01_10_26-Desktop.zip` |
 | Mac or Linux | `LLR-Revival-v8_0-build4-01_10_26-Desktop-LinuxMac.zip` |
 | iPad / Android tablet | `LLR-Revival-v8_0-build4-01_10_26-Desktop-iOSAndroid.zip` |
