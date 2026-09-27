@@ -1,13 +1,13 @@
 {
-  "rev": 1508,
+  "rev": 1509,
   "build": "Build 4",
   "datum": "01.10.2026",
   "stufe": "normal",
   "text": {
-    "de": "Version 8.0 Build 4 mit Update-Hinweisen, korrigierten Setup-Sprachdateien und weiteren Verbesserungen.",
-    "en": "Version 8.0 Build 4 with update notices, corrected setup language files and further improvements.",
-    "fr": "Version 8.0 Build 4 avec avis de mise à jour, fichiers de langue du setup corrigés et autres améliorations.",
-    "es": "Versión 8.0 Build 4 con avisos de actualización, archivos de idioma del instalador corregidos y otras mejoras."
+    "de": "Version 8.0 Build 4: Setup installiert jede Sprache in einen eigenen Ordner, Senden an Präsentation/Textwerkstatt repariert und weitere Verbesserungen.",
+    "en": "Version 8.0 Build 4: Setup installs each language in its own folder, sending to Presentations/Text Workshop fixed, and further improvements.",
+    "fr": "Version 8.0 Build 4 : le setup installe chaque langue dans son propre dossier, envoi vers Présentations/Atelier de texte corrigé et autres améliorations.",
+    "es": "Versión 8.0 Build 4: el instalador coloca cada idioma en su propia carpeta, envío a Presentaciones/Taller de texto corregido y otras mejoras."
   },
   "url": "https://github.com/joefritz2024/LLR-Revival/releases"
 }
