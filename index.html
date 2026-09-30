@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>LLR-Revival – free companion for Logos and Verbum</title>
+<meta name="description" content="Free companion app for Logos Bible Software and Verbum users. English, Deutsch, Français, Español.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600;0,8..60,700;1,8..60,400&display=swap" rel="stylesheet">
+<style>
+:root {
+  --ink: #3a0a18;         /* dunkles Weinrot: Schrift */
+  --wine: #9b1c3a;        /* Hausfarbe der App */
+  --gold: #b8891a;        /* \"Warm & Gold\" */
+  --page: #f9f6ff;        /* Hintergrund der App */
+  --line: #e4d6dd;
+  --soft: #6b4a55;
+}
+* { box-sizing: border-box; }
+html { -webkit-text-size-adjust: 100%; }
+body {
+  margin: 0; background: var(--page); color: var(--ink);
+  font: 400 1.125rem/1.65 "Source Serif 4", Georgia, "Times New Roman", serif;
+}
+a { color: var(--wine); }
+a:focus-visible, button:focus-visible { outline: 3px solid var(--gold); outline-offset: 2px; }
+.wrap { max-width: 44rem; margin: 0 auto; padding: 0 1.25rem; }
+
+/* Die vier Tueren: das eine auffaellige Element der Seite */
+.doors { display: grid; grid-template-columns: repeat(4, 1fr); border-bottom: 4px solid var(--wine); background: #fff; }
+.doors button {
+  appearance: none; border: 0; border-right: 1px solid var(--line); background: #fff; color: var(--soft);
+  font: 600 1.05rem/1.2 "Source Serif 4", Georgia, serif; padding: 1.1rem 0.5rem 0.9rem; cursor: pointer;
+}
+.doors button:last-child { border-right: 0; }
+.doors button span { display: block; font-size: 1.6rem; margin-bottom: 0.25rem; }
+.doors button[aria-selected="true"] { background: var(--wine); color: #fff; }
+
+header.hero { padding: 3rem 0 2rem; }
+h1 { font-size: clamp(2.2rem, 6vw, 3.4rem); line-height: 1.08; margin: 0 0 0.75rem; font-weight: 700; letter-spacing: -0.01em; }
+.lead { font-size: 1.25rem; margin: 0 0 1.75rem; color: var(--ink); }
+.cta { display: inline-block; background: var(--wine); color: #fff; text-decoration: none; font-weight: 600; padding: 0.85rem 1.4rem; border-radius: 6px; }
+.cta:hover { background: #7d1530; }
+.sub { display: block; margin-top: 0.6rem; font-size: 0.95rem; color: var(--soft); }
+
+section { padding: 1.75rem 0; border-top: 1px solid var(--line); }
+h2 { font-size: 1.45rem; margin: 0 0 0.75rem; }
+ul { padding-left: 1.2rem; margin: 0; }
+li { margin: 0.35rem 0; }
+p { margin: 0 0 0.9rem; }
+
+.video { position: relative; aspect-ratio: 16 / 9; background: #000; border-radius: 6px; overflow: hidden; margin: 0.5rem 0 1rem; }
+.video iframe { position: absolute; inset: 0; width: 100%; height: 100%; border: 0; }
+.jump { display: flex; flex-wrap: wrap; gap: 0.6rem; margin-bottom: 0.9rem; }
+.jump button {
+  appearance: none; font: 600 1rem/1.2 "Source Serif 4", Georgia, serif; color: var(--wine); background: #fff;
+  border: 1.5px solid var(--wine); border-radius: 6px; padding: 0.55rem 0.9rem; cursor: pointer;
+}
+.jump button:hover { background: #f3e8ec; }
+.note { font-size: 0.98rem; color: var(--soft); }
+.cta.alt { background: #fff; color: var(--wine); border: 1.5px solid var(--wine); }
+.cta.alt:hover { background: #f3e8ec; }
+.warn { border-left: 4px solid var(--gold); padding: 0.1rem 0 0.1rem 1rem; }
+
+footer { padding: 2rem 0 3rem; border-top: 1px solid var(--line); font-size: 0.95rem; color: var(--soft); }
+
+@media (max-width: 520px) {
+  .doors button { font-size: 0.9rem; padding: 0.8rem 0.2rem; }
+  .doors button span { font-size: 1.3rem; }
+}
+@media (prefers-reduced-motion: no-preference) {
+  main { transition: opacity 0.2s; }
+  main.switching { opacity: 0; }
+}
+</style>
+</head>
+<body>
+
+<nav class="doors" role="tablist" aria-label="Language">
+  <button role="tab" data-lang="en"><span>🇬🇧</span>English</button>
+  <button role="tab" data-lang="de"><span>🇩🇪</span>Deutsch</button>
+  <button role="tab" data-lang="fr"><span>🇫🇷</span>Français</button>
+  <button role="tab" data-lang="es"><span>🇪🇸</span>Español</button>
+</nav>
+
+<main id="main" class="wrap" aria-live="polite"></main>
+
+<script>
+// Alle Texte an EINER Stelle. Links bei Bedarf hier aendern.
+var LINKS = {
+  latest: 'https://github.com/joefritz2024/LLR-Revival/releases/latest',
+  all: 'https://github.com/joefritz2024/LLR-Revival/releases',
+  form: 'https://tinyurl.com/4pxh58nw',
+  discuss: 'https://github.com/joefritz2024/LLR-Revival/discussions',
+  // Gaestebuch (giscus). Die beiden IDs liefert https://giscus.app nach der Einrichtung -- siehe Anleitung.
+  // Solange sie leer sind, zeigt die Seite statt des Eingabefensters einen Link zum Diskussionsbereich.
+  giscus: { repo: 'joefritz2024/LLR-Revival', repoId: '', category: 'Guestbook', categoryId: '', term: 'LLR-Revival Guestbook' },
+  videoId: 'Ca8gLcFVeV4',
+  jumpSec: 1200   // Minute 20
+};
+var T = {
+  en: {
+    title: 'LLR-Revival',
+    lead: 'A free companion for Logos Bible Software and Verbum. Rediscover the books you already own, search your library in depth, and take your study all the way to a sermon and a presentation for Sunday.',
+    cta: 'Download for Windows',
+    sub: 'Also for macOS, Linux, iPad and Android tablets: <a href="' + LINKS.all + '">all downloads</a>',
+    whatH: 'What it does for you',
+    what: [
+      'Browse your Logos library by category and search it in depth, including the advanced search across the whole library.',
+      'Collect quotes and notes and shape your sermon in the Sermon Workshop.',
+      'Turn your sermon into slides for the service, with transitions and line-by-line text animations, and export them to PowerPoint.',
+      'Explain passages visually with diagrams and timelines.',
+      'AI features are optional. The app works fully without them.'
+    ],
+    videoH: 'Watch the tutorial',
+    videoP: 'New to LLR-Revival? Watch from the beginning. Already know the basics? Start at minute 20.',
+    fromStart: 'Watch from the beginning',
+    fromJump: 'Start at minute 20',
+    videoNote: 'In the player you can choose the audio track (German original, English, French, Spanish) and subtitles (English, French, Spanish).',
+    gbH: 'Guestbook',
+    gbP: 'Has LLR-Revival helped you? Do you have a question or an experience to share? Leave a few words here. Every message encourages me and helps other users.',
+    gbNote: 'Sign in with your free GitHub account to write. Messages are public.',
+    gbBtn: 'Open the guestbook',
+    formLbl: 'Contact form: ',
+    sysH: 'Your system stays untouched',
+    sysP: 'The Windows Setup needs no administrator rights. It installs into its own folder and brings its own Python, so nothing is installed system-wide and no system settings are changed. It only adds Start-menu shortcuts and an entry for uninstalling.',
+    devH: 'Supported devices',
+    devP: 'Windows, macOS and Linux computers, iPad and Android tablets. LLR-Revival is not designed for smartphones: their screens are too small for the program.',
+    updH: 'Updates',
+    updP: 'The app tells you when a new version is available. You do not need to follow any forum.',
+    foot: 'LLR-Revival is completely free, a gift to the Logos and Verbum community. © 2026 Hermann Fritz, retired pastor. Inspired by the original work of Steve Clark (LLR – Logos Library Reader). Free to use at home, in church and in teaching, and to pass on unchanged and free of charge. It may not be sold or included in paid products. Details in LICENSE.txt.'
+  },
+  de: {
+    title: 'LLR-Revival',
+    lead: 'Ein kostenloser Begleiter für Logos Bibelsoftware und Verbum. Entdecken Sie die Bücher neu, die Sie bereits besitzen, durchsuchen Sie Ihre Bibliothek gründlich und führen Sie Ihr Studium bis zur fertigen Predigt und Präsentation für den Gottesdienst.',
+    cta: 'Für Windows herunterladen',
+    sub: 'Auch für macOS, Linux, iPad und Android-Tablets: <a href="' + LINKS.all + '">alle Downloads</a>',
+    whatH: 'Was die App Ihnen bringt',
+    what: [
+      'Ihre Logos-Bibliothek nach Kategorien durchstöbern und gründlich durchsuchen, auch mit der erweiterten Suche über die ganze Bibliothek.',
+      'Zitate und Notizen sammeln und die Predigt in der Predigtwerkstatt ausarbeiten.',
+      'Aus der Predigt Folien für den Gottesdienst machen, mit Übergängen und Text, der Zeile für Zeile erscheint, und als PowerPoint speichern.',
+      'Bibeltexte mit Schaubildern und Zeitleisten anschaulich erklären.',
+      'KI-Funktionen sind freiwillig. Die App funktioniert auch ganz ohne sie.'
+    ],
+    videoH: 'Das Einführungsvideo',
+    videoP: 'Neu bei LLR-Revival? Dann schauen Sie von Anfang an. Wer die Grundlagen schon kennt, steigt bei Minute 20 ein.',
+    fromStart: 'Von Anfang an ansehen',
+    fromJump: 'Ab Minute 20 ansehen',
+    videoNote: 'Im Player lassen sich Tonspur (Deutsch im Original, Englisch, Französisch, Spanisch) und Untertitel (Englisch, Französisch, Spanisch) wählen.',
+    gbH: 'Gästebuch',
+    gbP: 'Hat Ihnen LLR-Revival geholfen? Haben Sie eine Rückfrage oder eine Erfahrung, die Sie teilen möchten? Hinterlassen Sie hier ein paar Zeilen. Jede Nachricht ermutigt mich und hilft anderen Nutzern.',
+    gbNote: 'Zum Schreiben melden Sie sich mit einem kostenlosen GitHub-Konto an. Die Beiträge sind öffentlich.',
+    gbBtn: 'Zum Gästebuch',
+    formLbl: 'Kontaktformular: ',
+    sysH: 'Ihr System bleibt unberührt',
+    sysP: 'Das Windows-Setup braucht keine Administratorrechte. Es installiert in einen eigenen Ordner und bringt sein eigenes Python mit. Es wird also nichts systemweit installiert und keine Systemeinstellung verändert. Es legt nur Startmenü-Verknüpfungen und einen Eintrag zum Deinstallieren an.',
+    devH: 'Geeignete Geräte',
+    devP: 'Windows-, macOS- und Linux-Rechner, iPad und Android-Tablets. Für Smartphones ist LLR-Revival nicht gemacht: Deren Bildschirme sind für das Programm zu klein.',
+    updH: 'Updates',
+    updP: 'Die App meldet selbst, wenn eine neue Version bereitsteht. Sie müssen dafür kein Forum verfolgen.',
+    foot: 'LLR-Revival ist völlig kostenlos, ein Geschenk an die Logos- und Verbum-Gemeinschaft. © 2026 Hermann Fritz, Pastor im Ruhestand. Inspiriert durch die Originalarbeit von Steve Clark (LLR – Logos Library Reader). Frei nutzbar privat, in der Gemeinde und in der Lehre, und unverändert und kostenlos weitergebbar. Verkauf und Einbindung in kostenpflichtige Produkte sind nicht erlaubt. Einzelheiten in LICENSE.txt.'
+  },
+  fr: {
+    title: 'LLR-Revival',
+    lead: 'Un compagnon gratuit pour Logos Bible Software et Verbum. Redécouvrez les livres que vous possédez déjà, explorez votre bibliothèque en profondeur et menez votre étude jusqu’à la prédication et la présentation du dimanche.',
+    cta: 'Télécharger pour Windows',
+    sub: 'Aussi pour macOS, Linux, iPad et tablettes Android : <a href="' + LINKS.all + '">tous les téléchargements</a>',
+    whatH: 'Ce que l’application vous apporte',
+    what: [
+      'Parcourir votre bibliothèque Logos par catégories et la fouiller en profondeur, y compris avec la recherche avancée sur toute la bibliothèque.',
+      'Rassembler citations et notes et élaborer votre prédication dans l’atelier de prédication.',
+      'Transformer la prédication en diapositives pour le culte, avec transitions et texte qui apparaît ligne par ligne, et les exporter vers PowerPoint.',
+      'Expliquer les textes bibliques avec des schémas et des frises chronologiques.',
+      'Les fonctions d’IA sont facultatives. L’application fonctionne entièrement sans elles.'
+    ],
+    videoH: 'La vidéo d’introduction',
+    videoP: 'Vous découvrez LLR-Revival ? Regardez depuis le début. Vous connaissez déjà les bases ? Commencez à la minute 20.',
+    fromStart: 'Regarder depuis le début',
+    fromJump: 'Commencer à la minute 20',
+    videoNote: 'Dans le lecteur, vous pouvez choisir la piste audio (allemand original, anglais, français, espagnol) et les sous-titres (anglais, français, espagnol).',
+    gbH: 'Livre d’or',
+    gbP: 'LLR-Revival vous a-t-il aidé ? Vous avez une question ou une expérience à partager ? Laissez quelques mots ici. Chaque message m’encourage et aide les autres utilisateurs.',
+    gbNote: 'Pour écrire, connectez-vous avec un compte GitHub gratuit. Les messages sont publics.',
+    gbBtn: 'Ouvrir le livre d’or',
+    formLbl: 'Formulaire de contact : ',
+    sysH: 'Votre système reste intact',
+    sysP: 'Le setup Windows ne demande pas de droits d’administrateur. Il s’installe dans son propre dossier avec son propre Python : rien n’est installé au niveau du système et aucun réglage système n’est modifié. Il ajoute seulement des raccourcis dans le menu Démarrer et une entrée pour la désinstallation.',
+    devH: 'Appareils pris en charge',
+    devP: 'Ordinateurs Windows, macOS et Linux, iPad et tablettes Android. LLR-Revival n’est pas conçu pour les smartphones : leur écran est trop petit pour le programme.',
+    updH: 'Mises à jour',
+    updP: 'L’application vous signale elle-même qu’une nouvelle version est disponible. Inutile de suivre un forum.',
+    foot: 'LLR-Revival est entièrement gratuit, un cadeau à la communauté Logos et Verbum. © 2026 Hermann Fritz, pasteur à la retraite. Inspiré du travail original de Steve Clark (LLR – Logos Library Reader). Utilisation libre à la maison, à l’église et dans l’enseignement ; diffusion autorisée sans modification et sans contrepartie. Vente et intégration dans des produits payants interdites. Détails dans LICENSE.txt.'
+  },
+  es: {
+    title: 'LLR-Revival',
+    lead: 'Un compañero gratuito para Logos Bible Software y Verbum. Redescubra los libros que ya tiene, explore su biblioteca a fondo y lleve su estudio hasta el sermón y la presentación del domingo.',
+    cta: 'Descargar para Windows',
+    sub: 'También para macOS, Linux, iPad y tabletas Android: <a href="' + LINKS.all + '">todas las descargas</a>',
+    whatH: 'Lo que la aplicación le aporta',
+    what: [
+      'Recorrer su biblioteca Logos por categorías y buscar en ella a fondo, también con la búsqueda avanzada en toda la biblioteca.',
+      'Reunir citas y notas y preparar el sermón en el Taller de sermones.',
+      'Convertir el sermón en diapositivas para el culto, con transiciones y texto que aparece línea por línea, y exportarlas a PowerPoint.',
+      'Explicar pasajes bíblicos con diagramas y líneas de tiempo.',
+      'Las funciones de IA son opcionales. La aplicación funciona plenamente sin ellas.'
+    ],
+    videoH: 'El vídeo de introducción',
+    videoP: '¿Nuevo en LLR-Revival? Véalo desde el principio. ¿Ya conoce lo básico? Empiece en el minuto 20.',
+    fromStart: 'Ver desde el principio',
+    fromJump: 'Empezar en el minuto 20',
+    videoNote: 'En el reproductor puede elegir la pista de audio (alemán original, inglés, francés, español) y los subtítulos (inglés, francés, español).',
+    gbH: 'Libro de visitas',
+    gbP: '¿Le ha ayudado LLR-Revival? ¿Tiene una pregunta o una experiencia que compartir? Deje aquí unas líneas. Cada mensaje me anima y ayuda a otros usuarios.',
+    gbNote: 'Para escribir, inicie sesión con una cuenta gratuita de GitHub. Los mensajes son públicos.',
+    gbBtn: 'Abrir el libro de visitas',
+    formLbl: 'Formulario de contacto: ',
+    sysH: 'Su sistema queda intacto',
+    sysP: 'El instalador de Windows no necesita derechos de administrador. Se instala en su propia carpeta y trae su propio Python: no se instala nada a nivel del sistema ni se cambia ningún ajuste del sistema. Solo añade accesos directos en el menú Inicio y una entrada para desinstalar.',
+    devH: 'Dispositivos compatibles',
+    devP: 'Ordenadores Windows, macOS y Linux, iPad y tabletas Android. LLR-Revival no está pensado para smartphones: su pantalla es demasiado pequeña para el programa.',
+    updH: 'Actualizaciones',
+    updP: 'La aplicación le avisa cuando hay una nueva versión. No necesita seguir ningún foro.',
+    foot: 'LLR-Revival es totalmente gratuito, un regalo para la comunidad de Logos y Verbum. © 2026 Hermann Fritz, pastor jubilado. Inspirado en el trabajo original de Steve Clark (LLR – Logos Library Reader). Uso libre en casa, en la iglesia y en la enseñanza; puede compartirse sin cambios y de forma gratuita. No puede venderse ni incluirse en productos de pago. Detalles en LICENSE.txt.'
+  }
+};
+
+function esc(s) { return String(s).replace(/[&<>"]/g, function(c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]; }); }
+function videoSrc(start) {
+  return 'https://www.youtube-nocookie.com/embed/' + LINKS.videoId + '?rel=0' + (start ? '&start=' + start + '&autoplay=1' : '');
+}
+// Gaestebuch: giscus-Eingabefenster; Beitraege liegen im GitHub-Diskussionsbereich (dort loeschen/ausblenden/sperren)
+function mountGuestbook(lang, t) {
+  var box = document.getElementById('gb'), g = LINKS.giscus;
+  if (!box) return;
+  if (!g.repoId || !g.categoryId) {
+    box.innerHTML = '<a class="cta alt" href="' + LINKS.discuss + '">' + esc(t.gbBtn) + '</a>';
+    return;
+  }
+  var sc = document.createElement('script');
+  sc.src = 'https://giscus.app/client.js';
+  var a = { 'data-repo': g.repo, 'data-repo-id': g.repoId, 'data-category': g.category, 'data-category-id': g.categoryId,
+    'data-mapping': 'specific', 'data-term': g.term, 'data-strict': '1', 'data-reactions-enabled': '1', 'data-emit-metadata': '0',
+    'data-input-position': 'top', 'data-theme': 'light', 'data-lang': lang, 'data-loading': 'lazy', 'crossorigin': 'anonymous' };
+  for (var k in a) sc.setAttribute(k, a[k]);
+  sc.async = true;
+  box.appendChild(sc);
+}
+function render(lang) {
+  var t = T[lang] || T.en;
+  document.documentElement.lang = lang;
+  var m = document.getElementById('main');
+  m.innerHTML =
+    '<header class="hero"><h1>' + esc(t.title) + '</h1><p class="lead">' + esc(t.lead) + '</p>' +
+    '<a class="cta" href="' + LINKS.latest + '">' + esc(t.cta) + '</a><span class="sub">' + t.sub + '</span></header>' +
+    '<section><h2>' + esc(t.whatH) + '</h2><ul>' + t.what.map(function(x) { return '<li>' + esc(x) + '</li>'; }).join('') + '</ul></section>' +
+    '<section id="video"><h2>' + esc(t.videoH) + '</h2><p>' + esc(t.videoP) + '</p>' +
+    '<div class="jump"><button type="button" data-start="0">' + esc(t.fromStart) + '</button><button type="button" data-start="' + LINKS.jumpSec + '">' + esc(t.fromJump) + '</button></div>' +
+    '<div class="video"><iframe id="yt" src="' + videoSrc(0) + '" title="' + esc(t.videoH) + '" allow="autoplay; encrypted-media; picture-in-picture; fullscreen" allowfullscreen loading="lazy"></iframe></div>' +
+    '<p class="note">' + esc(t.videoNote) + '</p><p class="note">' + esc(t.formLbl) + '<a href="' + LINKS.form + '">' + LINKS.form.replace('https://', '') + '</a></p></section>' +
+    // Gaestebuch folgt spaeter (Google-Formular mit Freigabe); bis dahin ausgeblendet
+    '' +
+    '<section><h2>' + esc(t.sysH) + '</h2><p>' + esc(t.sysP) + '</p></section>' +
+    '<section><h2>' + esc(t.devH) + '</h2><p class="warn">' + esc(t.devP) + '</p></section>' +
+    '<section><h2>' + esc(t.updH) + '</h2><p>' + esc(t.updP) + '</p></section>' +
+    '<footer>' + esc(t.foot) + '</footer>';
+  mountGuestbook(lang, t);
+  Array.prototype.forEach.call(m.querySelectorAll('.jump button'), function(b) {
+    b.onclick = function() { document.getElementById('yt').src = videoSrc(+b.getAttribute('data-start')); };
+  });
+  Array.prototype.forEach.call(document.querySelectorAll('.doors button'), function(b) {
+    b.setAttribute('aria-selected', b.getAttribute('data-lang') === lang ? 'true' : 'false');
+  });
+}
+function pick() {
+  var h = (location.hash || '').replace('#', '').toLowerCase();
+  if (T[h]) return h;
+  var n = ((navigator.language || 'en') + '').slice(0, 2).toLowerCase();
+  return T[n] ? n : 'en';
+}
+Array.prototype.forEach.call(document.querySelectorAll('.doors button'), function(b) {
+  b.onclick = function() {
+    var l = b.getAttribute('data-lang');
+    // In Vorschau-Fenstern (z. B. eingebettet als srcdoc) ist replaceState verboten -- dann nur umschalten, ohne Adresszeile
+    try { history.replaceState(null, '', '#' + l); } catch (e) {}
+    render(l);
+  };
+});
+window.addEventListener('hashchange', function() { render(pick()); });
+render(pick());
+</script>
+</body>
+</html>
