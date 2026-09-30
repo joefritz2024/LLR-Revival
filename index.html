@@ -66,6 +66,7 @@ p { margin: 0 0 0.9rem; }
 .note { font-size: 0.98rem; color: var(--soft); }
 .cta.alt { background: #fff; color: var(--wine); border: 1.5px solid var(--wine); }
 .cta.alt:hover { background: #f3e8ec; }
+.btns { display: flex; flex-wrap: wrap; gap: 0.75rem; margin-bottom: 0.9rem; }
 .warn { border-left: 4px solid var(--gold); padding: 0.1rem 0 0.1rem 1rem; }
 
 footer { padding: 2rem 0 3rem; border-top: 1px solid var(--line); font-size: 0.95rem; color: var(--soft); }
@@ -97,6 +98,7 @@ var LINKS = {
   latest: 'https://github.com/joefritz2024/LLR-Revival/releases/latest',
   all: 'https://github.com/joefritz2024/LLR-Revival/releases',
   form: 'https://tinyurl.com/4pxh58nw',
+  forum: 'https://community.logos.com/forums/topic/238940-llr-revival-free-companion-app-for-logos-and-verbum-all-updates-and-feedback-in-this-thread/',
   discuss: 'https://github.com/joefritz2024/LLR-Revival/discussions',
   // Gaestebuch (giscus). Die beiden IDs liefert https://giscus.app nach der Einrichtung -- siehe Anleitung.
   // Solange sie leer sind, zeigt die Seite statt des Eingabefensters einen Link zum Diskussionsbereich.
@@ -138,6 +140,8 @@ var T = {
     noteH: 'A short note means a lot',
     noteP: 'I develop LLR-Revival in my free time and give it away. A few lines from you encourage me and show me where and how the app is used: in which church or country, for sermons, teaching or personal study. Even a single sentence is enough.',
     noteBtn: 'Write a short note',
+    forumBtn: 'Share in the Logos forum',
+    forumNote: 'Private message: use the form. Public exchange with other users, questions and bug reports: the Logos forum thread (you may write in any of the four languages).',
     foot: 'LLR-Revival is completely free, a gift to the Logos and Verbum community. © 2026 Hermann Fritz, retired pastor. Inspired by the original work of Steve Clark (LLR – Logos Library Reader). Free to use at home, in church and in teaching, and to pass on unchanged and free of charge. It may not be sold or included in paid products. Details in LICENSE.txt.'
   },
   de: {
@@ -173,6 +177,8 @@ var T = {
     noteH: 'Ein kurzes Wort bedeutet viel',
     noteP: 'Ich entwickle LLR-Revival in meiner freien Zeit und verschenke es. Ein paar Zeilen von Ihnen ermutigen mich und zeigen mir, wo und wie die App eingesetzt wird: in welcher Gemeinde oder welchem Land, für Predigt, Unterricht oder das eigene Bibelstudium. Schon ein einziger Satz genügt.',
     noteBtn: 'Kurze Nachricht schreiben',
+    forumBtn: 'Im Logosforum austauschen',
+    forumNote: 'Persönliche Nachricht: über das Formular. Öffentlicher Austausch mit anderen Nutzern, Fragen und Fehlermeldungen: im Logosforum-Thema (auch auf Deutsch).',
     foot: 'LLR-Revival ist völlig kostenlos, ein Geschenk an die Logos- und Verbum-Gemeinschaft. © 2026 Hermann Fritz, Pastor im Ruhestand. Inspiriert durch die Originalarbeit von Steve Clark (LLR – Logos Library Reader). Frei nutzbar privat, in der Gemeinde und in der Lehre, und unverändert und kostenlos weitergebbar. Verkauf und Einbindung in kostenpflichtige Produkte sind nicht erlaubt. Einzelheiten in LICENSE.txt.'
   },
   fr: {
@@ -208,6 +214,8 @@ var T = {
     noteH: 'Un petit mot compte beaucoup',
     noteP: 'Je développe LLR-Revival sur mon temps libre et je l’offre gratuitement. Quelques lignes de votre part m’encouragent et me montrent où et comment l’application est utilisée : dans quelle église ou quel pays, pour la prédication, l’enseignement ou l’étude personnelle. Une seule phrase suffit.',
     noteBtn: 'Écrire un petit mot',
+    forumBtn: 'Échanger sur le forum Logos',
+    forumNote: 'Message personnel : par le formulaire. Échange public avec d’autres utilisateurs, questions et signalements d’erreurs : dans le fil du forum Logos (aussi en français).',
     foot: 'LLR-Revival est entièrement gratuit, un cadeau à la communauté Logos et Verbum. © 2026 Hermann Fritz, pasteur à la retraite. Inspiré du travail original de Steve Clark (LLR – Logos Library Reader). Utilisation libre à la maison, à l’église et dans l’enseignement ; diffusion autorisée sans modification et sans contrepartie. Vente et intégration dans des produits payants interdites. Détails dans LICENSE.txt.'
   },
   es: {
@@ -243,6 +251,8 @@ var T = {
     noteH: 'Unas palabras significan mucho',
     noteP: 'Desarrollo LLR-Revival en mi tiempo libre y lo regalo. Unas líneas suyas me animan y me muestran dónde y cómo se usa la aplicación: en qué iglesia o país, para la predicación, la enseñanza o el estudio personal. Basta con una sola frase.',
     noteBtn: 'Escribir unas palabras',
+    forumBtn: 'Compartir en el foro de Logos',
+    forumNote: 'Mensaje personal: con el formulario. Intercambio público con otros usuarios, preguntas y avisos de errores: en el hilo del foro de Logos (también en español).',
     foot: 'LLR-Revival es totalmente gratuito, un regalo para la comunidad de Logos y Verbum. © 2026 Hermann Fritz, pastor jubilado. Inspirado en el trabajo original de Steve Clark (LLR – Logos Library Reader). Uso libre en casa, en la iglesia y en la enseñanza; puede compartirse sin cambios y de forma gratuita. No puede venderse ni incluirse en productos de pago. Detalles en LICENSE.txt.'
   }
 };
@@ -290,7 +300,10 @@ function render(lang) {
     '<section><h2>' + esc(t.sysH) + '</h2><p>' + esc(t.sysP) + '</p></section>' +
     '<section><h2>' + esc(t.devH) + '</h2><p class="warn">' + esc(t.devP) + '</p></section>' +
     '<section><h2>' + esc(t.updH) + '</h2><p>' + esc(t.updP) + '</p><p>' + esc(t.futP) + '</p></section>' +
-    '<section id="note"><h2>' + esc(t.noteH) + '</h2><p>' + esc(t.noteP) + '</p><a class="cta" href="' + LINKS.form + '" target="_blank" rel="noopener">' + esc(t.noteBtn) + '</a></section>' +
+    '<section id="note"><h2>' + esc(t.noteH) + '</h2><p>' + esc(t.noteP) + '</p>' +
+    '<div class="btns"><a class="cta" href="' + LINKS.form + '" target="_blank" rel="noopener">' + esc(t.noteBtn) + '</a>' +
+    '<a class="cta alt" href="' + LINKS.forum + '" target="_blank" rel="noopener">' + esc(t.forumBtn) + '</a></div>' +
+    '<p class="note">' + esc(t.forumNote) + '</p></section>' +
     '<footer>' + esc(t.foot) + '</footer>';
   mountGuestbook(lang, t);
   var th = document.getElementById('ytThumb');   // Fallback, falls kein Vorschaubild in hoher Aufloesung existiert
