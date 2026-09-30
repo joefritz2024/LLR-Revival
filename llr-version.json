@@ -1,13 +1,13 @@
 {
-  "rev": 1518,
+  "rev": 1524,
   "build": "Build 4",
   "datum": "01.10.2026",
   "stufe": "normal",
   "text": {
-    "de": "Version 8.0 Build 4: erweiterte Suche (z. B. Apostolikum) durchsucht wieder die ganze Bibliothek, Setup installiert jede Sprache in einen eigenen Ordner, weitere Korrekturen.",
-    "en": "Version 8.0 Build 4: advanced search (e.g. Apostles’ Creed) searches the whole library again, Setup installs each language in its own folder, further fixes.",
-    "fr": "Version 8.0 Build 4 : la recherche avancée (p. ex. Symbole des apôtres) parcourt de nouveau toute la bibliothèque, le setup installe chaque langue dans son propre dossier, autres corrections.",
-    "es": "Versión 8.0 Build 4: la búsqueda avanzada (p. ej. Credo apostólico) vuelve a recorrer toda la biblioteca, el instalador coloca cada idioma en su propia carpeta, otras correcciones."
+    "de": "Version 8.0 Build 4: Präsentationen mit deutlich sichtbaren Folienübergängen (14 Muster) und Text-Animationen (12 Arten), Tempo mit Sekundenangabe; mehrere Folien per Strg-/Umschalt-Klick markieren und gemeinsam einstellen; Foliendesign-Fenster nicht mehr abgeschnitten; Folien zwischen Präsentationen übertragen; erweiterte Suche durchsucht wieder die ganze Bibliothek, Setup installiert jede Sprache in einen eigenen Ordner, weitere Korrekturen.",
+    "en": "Version 8.0 Build 4: presentations with clearly visible slide transitions (14 patterns) and text animations (12 kinds), speed shown in seconds; select several slides with Ctrl/Shift-click and set them together; Slide design panel no longer cut off; slides can be transferred between presentations; advanced search covers the whole library again, Setup installs each language in its own folder, further fixes.",
+    "fr": "Version 8.0 Build 4 : présentations avec transitions bien visibles (14 modèles) et animations du texte (12 types), vitesse indiquée en secondes ; sélection de plusieurs diapositives par Ctrl/Maj-clic et réglage commun ; le panneau Design n’est plus tronqué ; diapositives transférables d’une présentation à l’autre ; la recherche avancée parcourt de nouveau toute la bibliothèque, le setup installe chaque langue dans son propre dossier, autres corrections.",
+    "es": "Versión 8.0 Build 4: presentaciones con transiciones bien visibles (14 modelos) y animaciones del texto (12 tipos), velocidad indicada en segundos; seleccionar varias diapositivas con Ctrl/Mayús+clic y ajustarlas juntas; el panel de diseño ya no queda cortado; diapositivas transferibles entre presentaciones; la búsqueda avanzada vuelve a recorrer toda la biblioteca, el instalador coloca cada idioma en su propia carpeta, otras correcciones."
   },
   "url": "https://github.com/joefritz2024/LLR-Revival/releases"
 }
