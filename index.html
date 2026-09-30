@@ -51,13 +51,18 @@ li { margin: 0.35rem 0; }
 p { margin: 0 0 0.9rem; }
 
 .video { position: relative; aspect-ratio: 16 / 9; background: #000; border-radius: 6px; overflow: hidden; margin: 0.5rem 0 1rem; }
-.video iframe { position: absolute; inset: 0; width: 100%; height: 100%; border: 0; }
+.video { display: block; }
+.video img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+.video .play { position: absolute; left: 50%; top: 50%; width: 76px; height: 54px; margin: -27px 0 0 -38px; background: var(--wine); border-radius: 14px; opacity: 0.92; }
+.video .play::after { content: ''; position: absolute; left: 31px; top: 15px; border-style: solid; border-width: 12px 0 12px 20px; border-color: transparent transparent transparent #fff; }
+.video:hover .play, .video:focus-visible .play { opacity: 1; background: #7d1530; }
 .jump { display: flex; flex-wrap: wrap; gap: 0.6rem; margin-bottom: 0.9rem; }
-.jump button {
+.jump .btn {
   appearance: none; font: 600 1rem/1.2 "Source Serif 4", Georgia, serif; color: var(--wine); background: #fff;
   border: 1.5px solid var(--wine); border-radius: 6px; padding: 0.55rem 0.9rem; cursor: pointer;
 }
-.jump button:hover { background: #f3e8ec; }
+.jump .btn { text-decoration: none; }
+.jump .btn:hover { background: #f3e8ec; }
 .note { font-size: 0.98rem; color: var(--soft); }
 .cta.alt { background: #fff; color: var(--wine); border: 1.5px solid var(--wine); }
 .cta.alt:hover { background: #f3e8ec; }
@@ -127,8 +132,12 @@ var T = {
     sysP: 'The Windows Setup needs no administrator rights. It installs into its own folder and brings its own Python, so nothing is installed system-wide and no system settings are changed. It only adds Start-menu shortcuts and an entry for uninstalling.',
     devH: 'Supported devices',
     devP: 'Windows, macOS and Linux computers, iPad and Android tablets. LLR-Revival is not designed for smartphones: their screens are too small for the program.',
-    updH: 'Updates',
-    updP: 'The app tells you when a new version is available. You do not need to follow any forum.',
+    updH: 'Updates and the future of the app',
+    updP: 'From version 8.0 Build 4 (October 1, 2026), the app tells you by itself when a new version is available, so you will always know if there is something new. You do not need to follow any forum. Older versions unfortunately do not have this notice yet. If you use an older version, please install Build 4 once; from then on the app will tell you about new versions by itself.',
+    futP: 'LLR-Revival is now largely complete. I will try to fix bugs and may still add good ideas from users, but I cannot promise this, as I now want to turn to other tasks.',
+    noteH: 'A short note means a lot',
+    noteP: 'I develop LLR-Revival in my free time and give it away. A few lines from you encourage me and show me where and how the app is used: in which church or country, for sermons, teaching or personal study. Even a single sentence is enough.',
+    noteBtn: 'Write a short note',
     foot: 'LLR-Revival is completely free, a gift to the Logos and Verbum community. © 2026 Hermann Fritz, retired pastor. Inspired by the original work of Steve Clark (LLR – Logos Library Reader). Free to use at home, in church and in teaching, and to pass on unchanged and free of charge. It may not be sold or included in paid products. Details in LICENSE.txt.'
   },
   de: {
@@ -158,8 +167,12 @@ var T = {
     sysP: 'Das Windows-Setup braucht keine Administratorrechte. Es installiert in einen eigenen Ordner und bringt sein eigenes Python mit. Es wird also nichts systemweit installiert und keine Systemeinstellung verändert. Es legt nur Startmenü-Verknüpfungen und einen Eintrag zum Deinstallieren an.',
     devH: 'Geeignete Geräte',
     devP: 'Windows-, macOS- und Linux-Rechner, iPad und Android-Tablets. Für Smartphones ist LLR-Revival nicht gemacht: Deren Bildschirme sind für das Programm zu klein.',
-    updH: 'Updates',
-    updP: 'Die App meldet selbst, wenn eine neue Version bereitsteht. Sie müssen dafür kein Forum verfolgen.',
+    updH: 'Updates und wie es weitergeht',
+    updP: 'Ab Version 8.0 Build 4 (1. Oktober 2026) meldet die App von selbst, wenn eine neue Version bereitsteht. So erfahren Sie immer, wenn es etwas Neues gibt. Sie müssen dafür kein Forum verfolgen. Ältere Versionen haben diese Meldung leider noch nicht. Wer eine ältere Version nutzt, installiert bitte einmal Build 4 – danach meldet sich die App bei Neuerungen von selbst.',
+    futP: 'LLR-Revival ist jetzt weitgehend fertig. Fehler versuche ich noch zu beheben, und gute Anregungen aus der Nutzergemeinschaft baue ich vielleicht noch ein. Versprechen kann ich das aber nicht, denn ich möchte mich nun anderen Aufgaben widmen.',
+    noteH: 'Ein kurzes Wort bedeutet viel',
+    noteP: 'Ich entwickle LLR-Revival in meiner freien Zeit und verschenke es. Ein paar Zeilen von Ihnen ermutigen mich und zeigen mir, wo und wie die App eingesetzt wird: in welcher Gemeinde oder welchem Land, für Predigt, Unterricht oder das eigene Bibelstudium. Schon ein einziger Satz genügt.',
+    noteBtn: 'Kurze Nachricht schreiben',
     foot: 'LLR-Revival ist völlig kostenlos, ein Geschenk an die Logos- und Verbum-Gemeinschaft. © 2026 Hermann Fritz, Pastor im Ruhestand. Inspiriert durch die Originalarbeit von Steve Clark (LLR – Logos Library Reader). Frei nutzbar privat, in der Gemeinde und in der Lehre, und unverändert und kostenlos weitergebbar. Verkauf und Einbindung in kostenpflichtige Produkte sind nicht erlaubt. Einzelheiten in LICENSE.txt.'
   },
   fr: {
@@ -189,8 +202,12 @@ var T = {
     sysP: 'Le setup Windows ne demande pas de droits d’administrateur. Il s’installe dans son propre dossier avec son propre Python : rien n’est installé au niveau du système et aucun réglage système n’est modifié. Il ajoute seulement des raccourcis dans le menu Démarrer et une entrée pour la désinstallation.',
     devH: 'Appareils pris en charge',
     devP: 'Ordinateurs Windows, macOS et Linux, iPad et tablettes Android. LLR-Revival n’est pas conçu pour les smartphones : leur écran est trop petit pour le programme.',
-    updH: 'Mises à jour',
-    updP: 'L’application vous signale elle-même qu’une nouvelle version est disponible. Inutile de suivre un forum.',
+    updH: 'Mises à jour et avenir de l’application',
+    updP: 'À partir de la version 8.0 Build 4 (1er octobre 2026), l’application vous signale elle-même qu’une nouvelle version est disponible. Vous saurez donc toujours s’il y a du nouveau. Inutile de suivre un forum. Les versions plus anciennes n’ont malheureusement pas encore cet avis. Si vous utilisez une version antérieure, installez une fois le Build 4 ; ensuite, l’application vous signalera elle-même les nouveautés.',
+    futP: 'LLR-Revival est maintenant en grande partie terminé. J’essaierai encore de corriger les erreurs et j’intégrerai peut-être de bonnes idées des utilisateurs, mais je ne peux pas le promettre, car je souhaite désormais me consacrer à d’autres tâches.',
+    noteH: 'Un petit mot compte beaucoup',
+    noteP: 'Je développe LLR-Revival sur mon temps libre et je l’offre gratuitement. Quelques lignes de votre part m’encouragent et me montrent où et comment l’application est utilisée : dans quelle église ou quel pays, pour la prédication, l’enseignement ou l’étude personnelle. Une seule phrase suffit.',
+    noteBtn: 'Écrire un petit mot',
     foot: 'LLR-Revival est entièrement gratuit, un cadeau à la communauté Logos et Verbum. © 2026 Hermann Fritz, pasteur à la retraite. Inspiré du travail original de Steve Clark (LLR – Logos Library Reader). Utilisation libre à la maison, à l’église et dans l’enseignement ; diffusion autorisée sans modification et sans contrepartie. Vente et intégration dans des produits payants interdites. Détails dans LICENSE.txt.'
   },
   es: {
@@ -220,15 +237,19 @@ var T = {
     sysP: 'El instalador de Windows no necesita derechos de administrador. Se instala en su propia carpeta y trae su propio Python: no se instala nada a nivel del sistema ni se cambia ningún ajuste del sistema. Solo añade accesos directos en el menú Inicio y una entrada para desinstalar.',
     devH: 'Dispositivos compatibles',
     devP: 'Ordenadores Windows, macOS y Linux, iPad y tabletas Android. LLR-Revival no está pensado para smartphones: su pantalla es demasiado pequeña para el programa.',
-    updH: 'Actualizaciones',
-    updP: 'La aplicación le avisa cuando hay una nueva versión. No necesita seguir ningún foro.',
+    updH: 'Actualizaciones y el futuro de la aplicación',
+    updP: 'A partir de la versión 8.0 Build 4 (1 de octubre de 2026), la aplicación le avisa por sí misma cuando hay una nueva versión. Así siempre sabrá si hay algo nuevo. No necesita seguir ningún foro. Las versiones anteriores todavía no tienen este aviso. Si usa una versión anterior, instale una vez el Build 4; a partir de entonces la aplicación le avisará por sí misma de las novedades.',
+    futP: 'LLR-Revival está ya prácticamente terminado. Intentaré seguir corrigiendo errores y quizá incorpore buenas ideas de los usuarios, pero no puedo prometerlo, porque ahora quiero dedicarme a otras tareas.',
+    noteH: 'Unas palabras significan mucho',
+    noteP: 'Desarrollo LLR-Revival en mi tiempo libre y lo regalo. Unas líneas suyas me animan y me muestran dónde y cómo se usa la aplicación: en qué iglesia o país, para la predicación, la enseñanza o el estudio personal. Basta con una sola frase.',
+    noteBtn: 'Escribir unas palabras',
     foot: 'LLR-Revival es totalmente gratuito, un regalo para la comunidad de Logos y Verbum. © 2026 Hermann Fritz, pastor jubilado. Inspirado en el trabajo original de Steve Clark (LLR – Logos Library Reader). Uso libre en casa, en la iglesia y en la enseñanza; puede compartirse sin cambios y de forma gratuita. No puede venderse ni incluirse en productos de pago. Detalles en LICENSE.txt.'
   }
 };
 
 function esc(s) { return String(s).replace(/[&<>"]/g, function(c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]; }); }
-function videoSrc(start) {
-  return 'https://www.youtube-nocookie.com/embed/' + LINKS.videoId + '?rel=0' + (start ? '&start=' + start + '&autoplay=1' : '');
+function ytUrl(start) {
+  return 'https://www.youtube.com/watch?v=' + LINKS.videoId + (start ? '&t=' + start + 's' : '');
 }
 // Gaestebuch: giscus-Eingabefenster; Beitraege liegen im GitHub-Diskussionsbereich (dort loeschen/ausblenden/sperren)
 function mountGuestbook(lang, t) {
@@ -256,19 +277,27 @@ function render(lang) {
     '<a class="cta" href="' + LINKS.latest + '">' + esc(t.cta) + '</a><span class="sub">' + t.sub + '</span></header>' +
     '<section><h2>' + esc(t.whatH) + '</h2><ul>' + t.what.map(function(x) { return '<li>' + esc(x) + '</li>'; }).join('') + '</ul></section>' +
     '<section id="video"><h2>' + esc(t.videoH) + '</h2><p>' + esc(t.videoP) + '</p>' +
-    '<div class="jump"><button type="button" data-start="0">' + esc(t.fromStart) + '</button><button type="button" data-start="' + LINKS.jumpSec + '">' + esc(t.fromJump) + '</button></div>' +
-    '<div class="video"><iframe id="yt" src="' + videoSrc(0) + '" title="' + esc(t.videoH) + '" allow="autoplay; encrypted-media; picture-in-picture; fullscreen" allowfullscreen loading="lazy"></iframe></div>' +
+    // Rev.-Seite: kein eingebetteter Player mehr (startete mit Untertiteln und niedriger Aufloesung, beides laesst YouTube
+    // im eingebetteten Player nicht festlegen). Grosses Vorschaubild + Knoepfe oeffnen das Video auf YouTube in voller Qualitaet.
+    '<a class="video" href="' + ytUrl(0) + '" target="_blank" rel="noopener" aria-label="' + esc(t.fromStart) + '">' +
+    '<img id="ytThumb" src="https://i.ytimg.com/vi/' + LINKS.videoId + '/maxresdefault.jpg" alt="" loading="lazy">' +
+    '<span class="play" aria-hidden="true"></span></a>' +
+    '<div class="jump"><a class="btn" href="' + ytUrl(0) + '" target="_blank" rel="noopener">' + esc(t.fromStart) + '</a>' +
+    '<a class="btn" href="' + ytUrl(LINKS.jumpSec) + '" target="_blank" rel="noopener">' + esc(t.fromJump) + '</a></div>' +
     '<p class="note">' + esc(t.videoNote) + '</p><p class="note">' + esc(t.formLbl) + '<a href="' + LINKS.form + '">' + LINKS.form.replace('https://', '') + '</a></p></section>' +
     // Gaestebuch folgt spaeter (Google-Formular mit Freigabe); bis dahin ausgeblendet
     '' +
     '<section><h2>' + esc(t.sysH) + '</h2><p>' + esc(t.sysP) + '</p></section>' +
     '<section><h2>' + esc(t.devH) + '</h2><p class="warn">' + esc(t.devP) + '</p></section>' +
-    '<section><h2>' + esc(t.updH) + '</h2><p>' + esc(t.updP) + '</p></section>' +
+    '<section><h2>' + esc(t.updH) + '</h2><p>' + esc(t.updP) + '</p><p>' + esc(t.futP) + '</p></section>' +
+    '<section id="note"><h2>' + esc(t.noteH) + '</h2><p>' + esc(t.noteP) + '</p><a class="cta" href="' + LINKS.form + '" target="_blank" rel="noopener">' + esc(t.noteBtn) + '</a></section>' +
     '<footer>' + esc(t.foot) + '</footer>';
   mountGuestbook(lang, t);
-  Array.prototype.forEach.call(m.querySelectorAll('.jump button'), function(b) {
-    b.onclick = function() { document.getElementById('yt').src = videoSrc(+b.getAttribute('data-start')); };
-  });
+  var th = document.getElementById('ytThumb');   // Fallback, falls kein Vorschaubild in hoher Aufloesung existiert
+  if (th) {
+    th.onerror = function() { th.onerror = function() { th.style.display = 'none'; }; th.src = 'https://i.ytimg.com/vi/' + LINKS.videoId + '/hqdefault.jpg'; };
+    th.onload = function() { if (th.naturalWidth && th.naturalWidth < 200) { th.onload = null; th.src = 'https://i.ytimg.com/vi/' + LINKS.videoId + '/hqdefault.jpg'; } };
+  }
   Array.prototype.forEach.call(document.querySelectorAll('.doors button'), function(b) {
     b.setAttribute('aria-selected', b.getAttribute('data-lang') === lang ? 'true' : 'false');
   });
